@@ -26,7 +26,7 @@ export function aovi(object) {
         },
         is(){return (this.value !== undefined && this.value !== '')}
     }
-    
+
     const o = {
         check:    name=>c.set(name),
         label:    label=>c.setlabel(label),
@@ -38,6 +38,7 @@ export function aovi(object) {
         maxLength:   (max,msg)=>c.test(c.value.length > max,`must have a maximum length of ${max}`,msg),
         min:   (min,msg)=>c.test(c.value <= min,`must be greater than ${min}`,msg),
         max:   (max,msg)=>c.test(c.value >= max,`must be less than ${max}`,msg),
+        is:   (cond,msg)=>c.test(cond,`is not valid`,msg),
         oneof: (list,msg)=>{
             const last = list.pop();
             return c.test(list.includes(c.value),`must be either ${list.join(', ')} or ${last}`,msg)
