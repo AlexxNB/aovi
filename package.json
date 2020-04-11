@@ -1,0 +1,39 @@
+{
+  "name": "aovi",
+  "version": "1.0.0",
+  "description": "Converts source of any CommonJS module to the ES module",
+  "main": "dist/aovi.js",
+  "module": "dist/aovi.mjs",
+  "browser": "dist/aovi.browser.js",
+  "scripts": {
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build",
+    "pretest": "rollup -c --environment NODE_ENV:test",
+    "test": "node tests/test | tap-diff"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexxNB/aovi.git"
+  },
+  "keywords": [
+    "validator",
+    "validte",
+    "validation",
+    "object validator"
+  ],
+  "author": "Alexey Schebelev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlexxNB/aovi/issues"
+  },
+  "homepage": "https://github.com/AlexxNB/aovi#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "diff": "^4.0.2",
+    "rollup": "^2.0.0",
+    "rollup-plugin-terser": "^5.2.0",
+    "tap-diff": "^0.1.1",
+    "tape": "^4.13.2"
+  }
+}
