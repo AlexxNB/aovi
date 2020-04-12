@@ -12,7 +12,7 @@ const test_object = {name:'John'};
 
 const result = aovi(test_object)
     .check('name')
-        .require()
+        .required()
         .match(/^[a-z]+$/i)
 
 console.log(result.valid); // true
@@ -28,7 +28,7 @@ console.log(result.valid); // true
     const test_object = {password:document.getElementById('password').value};
     const result = aovi(test_object)
         .check('password')
-            .require()
+            .required()
             .minLength(5)
 
     console.log(result.valid); // true
@@ -81,7 +81,7 @@ async function(req,res){
     const result = await aovi(data)      // don't miss await keyword here
         .check('password')
             .required()    
-            .is(async v=>check_password(data.userid,v)),'Wrong password')
+            .is(async password => await check_password(data.userid,password)),'Wrong password')
         .check('userid')
             .required()
             .type('number')
@@ -91,8 +91,6 @@ async function(req,res){
 }
 
 ```
-
-
 
 ## API
 
@@ -118,7 +116,7 @@ Check if the property's value is match `regular_expression`.
 
 ### `is(function,[custom_message])`
 
-Pass if the `function` returns `true`. If `function` is asynchronus, you must call [`.async()`](#async) at the end of the chain.
+Pass if the `function` returns `true`. This function accept one parameter which is a value of the current property. If `function` is asynchronus, you must call [`.async()`](#async) at the end of the chain.
 
 ### `oneof(array_of_variants,[custom_message])`
 
