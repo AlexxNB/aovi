@@ -20,7 +20,7 @@ console.log(result.valid); // true
 
 ### Browser
 ```html
-<script src='/aovi.browser.js'></script>
+<script src='https://unpkg.com/aovi/dist/aovi.browser.js'></script>
 ...
 <Input id="password" type="password" value="12345"/>
 
@@ -30,7 +30,7 @@ console.log(result.valid); // true
         .check('password')
             .require()
             .minLength(5)
-            
+
     console.log(result.valid); // true
 </script>
 ```
