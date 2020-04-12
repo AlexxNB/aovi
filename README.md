@@ -44,21 +44,24 @@ const {aovi} = require('aovi');
 const test_object = {
     user: 'John',
     sex: 'male',
-    email: 'not_the_email',
+    email: 'no',
     age: 16
 }
 
 const result = aovi(test_object)
-    .check('user')                   // the property name
-        .required()                  // check something
-        .type('string')              // check more
-    .check('sex')                    // and once again with another property
+    .check('user')              // the property name
+        .required()             // check something
+        .type('string')         // check more
+    .check('sex')               // and once again with another property
         .required()
         .oneof(['male','female'])
     .check('email')
         .match(/[^@]+@[^\.]+\..+/,'E-Mail is invalid')
+        .minLength(6)       // be skipped, because match already failed
     .check('age')
         .min(18)
+    .check('name')
+        .type('string')     // be skipped, because name is undefined and not required     
 
 console.log(result.valid); // false
 console.log(result.text()); // E-Mail is invalid. age must be greater than 18.
