@@ -4,8 +4,7 @@ module.exports = function(t) {
     let result;
 
     result = aovi({name:''})
-        .check('name')
-            .label('Your name')
+        .check('name','Your name')
             .required()
     t.equal(result.text(),'Your name is required.',"Custom label for message");
 
