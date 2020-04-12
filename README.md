@@ -57,16 +57,41 @@ const result = aovi(test_object)
         .oneof(['male','female'])
     .check('email')
         .match(/[^@]+@[^\.]+\..+/,'E-Mail is invalid')
-        .minLength(6)       // be skipped, because match already failed
+        .minLength(6)       // skipped, because match already failed
     .check('age')
         .min(18)
     .check('name')
-        .type('string')     // be skipped, because name is undefined and not required     
+        .type('string')     // skipped, because name is undefined and not required     
 
 console.log(result.valid); // false
 console.log(result.text()); // E-Mail is invalid. age must be greater than 18.
 console.log(result.json()); // [{"name": "email", "err":"E-Mail is invalid"},{"name": "age", "err":"age must be greater than 18"}]
 ```
+### Asynchronus example
+```js
+// http-request with body_parser.json middleware example
+async function(req,res){
+    const check_password = async function(userid,password) {
+        const user = await db.getuser(userid); // asynchronly request user from db 
+        return user.password===password;
+    }
+
+    const data = req.body;
+
+    const result = aovi(data)
+        .check('userid)
+            .required()
+            .type('number)
+        .check('password')
+            .required()
+            .is( (await check_password(data.userid,data.password) ),'Wrong password')
+
+    console.log(result.valid); // true or false
+}
+
+```
+
+
 
 ## API
 
