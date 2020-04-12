@@ -1,0 +1,6 @@
+src
+tests
+node_modules
+.github
+rollup.config.js
+.gitignore

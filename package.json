@@ -1,13 +1,12 @@
 {
   "name": "aovi",
   "version": "1.0.0",
-  "description": "Converts source of any CommonJS module to the ES module",
+  "description": "AOVI is a tiny dependency free library to validate values in declarative way.",
   "main": "dist/aovi.js",
   "module": "dist/aovi.mjs",
   "browser": "dist/aovi.browser.js",
   "scripts": {
     "build": "rollup -c",
-    "prepublishOnly": "npm run build",
     "pretest": "rollup -c --environment NODE_ENV:test",
     "test": "node tests/test | tap-diff"
   },
@@ -19,7 +18,8 @@
     "validator",
     "validte",
     "validation",
-    "object validator"
+    "object validator",
+    "form"
   ],
   "author": "Alexey Schebelev",
   "license": "MIT",
