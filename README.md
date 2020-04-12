@@ -79,9 +79,9 @@ async function(req,res){
     const data = req.body;
 
     const result = aovi(data)
-        .check('userid)
+        .check('userid')
             .required()
-            .type('number)
+            .type('number')
         .check('password')
             .required()
             .is( (await check_password(data.userid,data.password) ),'Wrong password')
