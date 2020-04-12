@@ -78,13 +78,14 @@ async function(req,res){
 
     const data = req.body;
 
-    const result = aovi(data)
+    const result = await aovi(data)      // don't miss await keyword here
+        .check('password')
+            .required()    
+            .is(async v=>check_password(data.userid,v)),'Wrong password')
         .check('userid')
             .required()
             .type('number')
-        .check('password')
-            .required()
-            .is( (await check_password(data.userid,data.password) ),'Wrong password')
+        .async()                         // you must end with .async() function
 
     console.log(result.valid); // true or false
 }
@@ -99,13 +100,9 @@ async function(req,res){
 
 Detrmine object for validation
 
-### `check(property_name)`
+### `check(property_name,[label])`
 
-Set which property will be validate by next functions
-
-### `label(property_label)`
-
-Set the name for the property which will be shown in default error messages
+Set which property will be validate by next functions. `label` is the name for the property which will be shown in default error messages
 
 ### `required([custom_message])`
 
@@ -119,9 +116,9 @@ Check if the property's value is of specified `type`, like 'string','number' etc
 
 Check if the property's value is match `regular_expression`.
 
-### `is(condition,[custom_message])`
+### `is(function,[custom_message])`
 
-Pass if the `condition` is `true`. `condition` may be either boolean or function which returns boolean.
+Pass if the `function` returns `true`. If `function` is asynchronus, you must call [`.async()`](#async) at the end of the chain.
 
 ### `oneof(array_of_variants,[custom_message])`
 
@@ -146,6 +143,10 @@ Check if the property's valueis greater than or equal `minimum`.
 ### `max(maximum,[custom_message])`
 
 Check if the property's value is less than or equal `maximum`.
+
+### `async()`
+
+You must end validation chain with `.async()` when you use asynchronus functions in the `.is()` validator. See the [asynhronus example](#asynchronus-example) for more info.
 
 ### `valid`
 
