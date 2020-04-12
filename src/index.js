@@ -1,52 +1,57 @@
-export function aovi(object) {
-    const c = {
-        errors: [],
-        name: undefined,
-        label: undefined,
-        value: undefined,
-        invalid: false,
-        set(name){
-            this.name=name;
-            this.label=name;
-            this.value=object[name]||undefined;
-            this.invalid=false;
-            return o;
-        },
-        setlabel(label){
-            this.label=label;
-            return o;
-        },
-        test(cond,dmsg,msg){
-            if(dmsg !== 'is required' && !this.is()) return o;
-            if(!this.invalid && !cond()) {
-                this.errors.push({name:this.name,err:msg||`${this.label} ${dmsg}`});
-                this.invalid=true;
+export function aovi(input) {
+    
+    const v = {
+        er: false,
+        qu: [],
+        cu: false,
+        add: (name,label) => (v.cu = { 
+                n:name, 
+                l:label||name, 
+                v:input[name], 
+                is:(input[name] !== undefined && input[name] !== ''), 
+                c:[] 
+            },
+            v.qu.push(v.cu),
+            a
+        ),
+        test: (cond,dmsg,msg,r)=>(
+            v.cu.c.push({
+                f:typeof cond === 'function' ? cond : _=>cond,
+                m: msg||`${v.cu.l} ${dmsg}`,
+                r: r||false
+            }),
+            a
+        ),
+        proc: async th=>{
+            if(v.er) return;
+            v.er = [];
+            for(let p of v.qu) for(let chk of p.c){
+                if(!chk.r && !p.is) continue;
+                let b = th ? await chk.f(chk.r ? p : p.v) : chk.f(chk.r ? p : p.v);
+                if(!th && b instanceof Promise) throw new Error('You must run .async() before get result');
+                if(!b) { v.er.push({name:p.n, error:chk.m}); break; }
             }
-            return o;
-        },
-        is(){return this.value !== undefined && this.value !== ''}
-    }, 
-    o = {
-        check:            name=>c.set(name),
-        label:           label=>c.setlabel(label),
-        required:          msg=>c.test(_=>c.is(),'is required',msg),
-        type:          (t,msg)=>c.test(_=>typeof c.value === t,`must be of type ${t}`,msg),
-        match:     (regex,msg)=>c.test(_=>regex.test(c.value),`must match ${regex.toString()}`,msg),
-        length:   (length,msg)=>c.test(_=>c.value.length === length,`must have a length of ${length}`,msg),
-        minLength:   (min,msg)=>c.test(_=>c.value.length >= min,`must have a minimum length of ${min}`,msg),
-        maxLength:   (max,msg)=>c.test(_=>c.value.length <= max,`must have a maximum length of ${max}`,msg),
-        min:         (min,msg)=>c.test(_=>c.value >= min,`must be greater than ${min}`,msg),
-        max:         (max,msg)=>c.test(_=>c.value <= max,`must be less than ${max}`,msg),
-        is:         (cond,msg)=>c.test(typeof cond === 'function' ? cond: _=>cond,`is not valid`,msg),
-        oneof:      (list,msg)=>{
-                        const last = list.pop();
-                        return c.test(_=>list.includes(c.value),`must be either ${list.join(', ')} or ${last}`,msg)
-                    },
-        json:  ()=>JSON.stringify(c.errors),
-        text:  ()=>c.errors.map(e=>e.err+'.').join(' '),
-        array: ()=>c.errors,
-        get valid(){return c.errors.length===0},
+        }
     }
 
-    return o;
+    const a = {
+        check: v.add,
+        required:        msg   => v.test(p=>p.is,'is required',msg,true),
+        is:        (cond,msg)  => v.test(cond,`is not valid`,msg),
+        type:      (type,msg)  => v.test(v=>typeof v === type,`must be of type ${type}`,msg),
+        match:     (regex,msg) => v.test(v=>regex.test(v),`must match ${regex.toString()}`,msg),
+        length:   (length,msg) => v.test(v=>v.length === length,`must have a length of ${length}`,msg),
+        minLength:   (min,msg) => v.test(v=>v.length >= min,`must have a minimum length of ${min}`,msg),
+        maxLength:   (max,msg) => v.test(v=>v.length <= max,`must have a maximum length of ${max}`,msg),
+        min:         (min,msg) => v.test(v=>v >= min,`must be greater than ${min}`,msg),
+        max:         (max,msg) => v.test(v=>v <= max,`must be less than ${max}`,msg),
+        oneof:      (list,msg) => v.test(v=>list.includes(v),`must be either ${list.slice(0,-1).join(', ')} or ${list[list.length-1]}`,msg),
+        async: async _ => (await v.proc(true),a),
+        text:  _ => ( v.proc(), v.er.map(e=>e.error+'.').join(' ') ),
+        json:  _ => ( v.proc(), JSON.stringify(v.er) ),
+        array: _ => ( v.proc(), v.er ),
+        get valid(){v.proc(); return v.er.length===0},
+    }
+
+    return a;
 }
