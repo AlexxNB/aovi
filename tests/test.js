@@ -1,25 +1,8 @@
 const test = require('tape');
-const {aovi} = require('../dist/aovi');
 
-const test_object = {
-    username: 'john',
-    email: 'john@mail.exmpl',
-    info:{
-        sex:'male',
-        birthday: new Date('1985-12-03T04:00:00'),
-        tnings: 5
-    }
-}
-
-test('Simple module', function (t) {
-    t.plan(1);
-
-    let result = aovi(test_object)
-        .check('username')
-            .required()
-            .oneof(['hue','moe','sere'])
-
-    console.log(result.json());
-
-    t.equal(1,1);
-});
+test('Simple tests', require('./_simple_tests'));
+test('Valid output tests', require('./_valid_output'));
+test('Invalid output tests', require('./_invalid_output'));
+test('Custom messages', require('./_custom_messages'));
+test('Chaining tests', require('./_chaining_test'));
+test('Asynchronus tests', require('./_async_test'));
