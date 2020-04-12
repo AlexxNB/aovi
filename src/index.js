@@ -37,7 +37,7 @@ export function aovi(object) {
         maxLength:   (max,msg)=>c.test(_=>c.value.length <= max,`must have a maximum length of ${max}`,msg),
         min:         (min,msg)=>c.test(_=>c.value >= min,`must be greater than ${min}`,msg),
         max:         (max,msg)=>c.test(_=>c.value <= max,`must be less than ${max}`,msg),
-        is:         (cond,msg)=>c.test(_=>cond,`is not valid`,msg),
+        is:         (cond,msg)=>c.test(typeof cond === 'function' ? cond: _=>cond,`is not valid`,msg),
         oneof:      (list,msg)=>{
                         const last = list.pop();
                         return c.test(_=>list.includes(c.value),`must be either ${list.join(', ')} or ${last}`,msg)
