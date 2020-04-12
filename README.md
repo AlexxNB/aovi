@@ -13,7 +13,7 @@ const test_object = {name:'John'};
 const result = aovi(test_object)
     .check('name')
         .require()
-        .match(/^[a-z]$/i)
+        .match(/^[a-z]+$/i)
 
 console.log(result.valid); // true
 ```
