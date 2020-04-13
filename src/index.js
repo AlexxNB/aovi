@@ -46,6 +46,14 @@ export function aovi(input) {
         min:         (min,msg) => v.test(v=>v >= min,`must be greater than ${min}`,msg),
         max:         (max,msg) => v.test(v=>v <= max,`must be less than ${max}`,msg),
         oneof:      (list,msg) => v.test(v=>list.includes(v),`must be either ${list.slice(0,-1).join(', ')} or ${list[list.length-1]}`,msg),
+        use:              (vl) => {  a[vl().name] = function (){
+                                        const p=arguments,
+                                        c = vl.apply(null,p),
+                                        cmsg = p.length > vl.length ? p[vl.length] : undefined;
+                                        return v.test(c.func, c.msg, cmsg);
+                                        }
+                                        return a;
+                            },
         async: async _ => (await v.proc(true),a),
         text:  _ => ( v.proc(), v.er.map(e=>e.error+'.').join(' ') ),
         json:  _ => ( v.proc(), JSON.stringify(v.er) ),

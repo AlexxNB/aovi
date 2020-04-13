@@ -92,11 +92,50 @@ async function(req,res){
 
 ```
 
+## Custom validators
+You may add your own reusable validators to the `aovi` object. Custom validator is the function which must return object with three elements:
+
+* `func` - test function must return `true` or `false`. When `true` value of the property is valid. Function gets the value of the property as its parameter.
+
+* `name` - name for validator method 
+
+* `msg` - default validation error message. Name of the property or its label will be added at the start of this text.
+
+### Custom validator example
+
+```js
+
+const my_custom_validator = (a,b) => {           // params will be passed to the validator
+        return {
+            func: (v)=>(v>=a && v<=b),           // gets value, must return true or false    
+            name: 'between',                     // name of the validator method
+            msg: `must be between ${a} and ${b}` // error message, when func returns false
+        }
+}
+
+const test_object={number1:5, number2:42, number3:100};
+
+const result = aovi(test_object)
+    .use(my_custom_validator)
+    .check('number1')
+        .between(10,50)
+    .check('number2')
+        .between(0,100)
+    .check('number3')
+        .between(1,10,'The value is out of range')
+
+console.log(result.text()); // number1 must be between 10 and 50. The value is out of range.
+```
+
 ## API
 
 ### `aovi(test_object)`
 
 Detrmine object for validation
+
+### `use(validator_function)`
+
+Add custom validator to the `aovi` object. See [Custom validators](#custom-validators) for more info.
 
 ### `check(property_name,[label])`
 
