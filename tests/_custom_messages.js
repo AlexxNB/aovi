@@ -55,7 +55,7 @@ module.exports = function (t) {
     result = aovi({name:'john'})
         .check('name')
             .is(false,msg)
-            
+         
     t.equal(result.text(),`${msg}.`,"Is custom message");
 
     msg = 'Name should be one of the list';

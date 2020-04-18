@@ -4,6 +4,7 @@ export function aovi(input) {
         er: false,
         qu: [],
         cu: false,
+         n: false,
         add: (name,label) => (v.cu = { 
                 n:name, 
                 l:label||name, 
@@ -14,14 +15,17 @@ export function aovi(input) {
             v.qu.push(v.cu),
             a
         ),
-        test: (cond,dmsg,msg,r)=>(
+        test: (cond,ymsg,nmsg,msg,r)=>{
+            if(!nmsg && v.n) throw new Error('Using .not with unsupported validator');
+            let cfn = typeof cond === 'function' ? cond : _=>cond;
             v.cu.c.push({
-                f:typeof cond === 'function' ? cond : _=>cond,
-                m: msg||`${v.cu.l} ${dmsg}`,
+                f: v.n ? p => !cfn(p) : cfn,
+                m: msg||`${v.cu.l} ${v.n ? nmsg : ymsg}`,
                 r: r||false
-            }),
-            a
-        ),
+            });
+            v.n=false;
+            return a
+        },
         proc: async th=>{
             if(v.er) return;
             v.er = [];
@@ -36,24 +40,28 @@ export function aovi(input) {
 
     const a = {
         check: v.add,
-        required:        msg   => v.test(p=>p.is,'is required',msg,true),
-        is:        (cond,msg)  => v.test(cond,`is not valid`,msg),
-        type:      (type,msg)  => v.test(v=>typeof v === type,`must be of type ${type}`,msg),
-        match:     (regex,msg) => v.test(v=>regex.test(v),`must match ${regex.toString()}`,msg),
-        length:   (length,msg) => v.test(v=>v.length === length,`must have a length of ${length}`,msg),
-        minLength:   (min,msg) => v.test(v=>v.length >= min,`must have a minimum length of ${min}`,msg),
-        maxLength:   (max,msg) => v.test(v=>v.length <= max,`must have a maximum length of ${max}`,msg),
-        min:         (min,msg) => v.test(v=>v >= min,`must be greater than ${min}`,msg),
-        max:         (max,msg) => v.test(v=>v <= max,`must be less than ${max}`,msg),
-        oneof:      (list,msg) => v.test(v=>list.includes(v),`must be either ${list.slice(0,-1).join(', ')} or ${list[list.length-1]}`,msg),
+        required:        msg   => v.test(p=>p.is,'is required',false,msg,true),
+        is:        (cond,msg)  => v.test(cond,`is not valid`,`is truly`,msg),
+        type:      (type,msg)  => v.test(v=>typeof v === type,`must be of type ${type}`,`must not be of type ${type}`,msg),
+        match:     (regex,msg) => v.test(v=>regex.test(v),`must match ${regex.toString()}`,`must not match ${regex.toString()}`,msg),
+        length:   (length,msg) => v.test(v=>v.length === length,`must have a length of ${length}`,`must not have a length of ${length}`,msg),
+        minLength:   (min,msg) => v.test(v=>v.length >= min,`must have a minimum length of ${min}`,false,msg),
+        maxLength:   (max,msg) => v.test(v=>v.length <= max,`must have a maximum length of ${max}`,false,msg),
+        min:         (min,msg) => v.test(v=>v >= min,`must be greater than ${min}`,false,msg),
+        max:         (max,msg) => v.test(v=>v <= max,`must be less than ${max}`,false,msg),
+        oneof:      (list,msg) => v.test(v=>list.includes(v),
+                                            `must be either ${list.slice(0,-1).join(', ')} or ${list[list.length-1]}`,
+                                            `must be neither ${list.slice(0,-1).join(', ')} or ${list[list.length-1]}`,
+                                        msg),
         use:              (vl) => {  a[vl().name] = function (){
                                         const p=arguments,
                                         c = vl.apply(null,p),
                                         cmsg = p.length > vl.length ? p[vl.length] : undefined;
-                                        return v.test(c.func, c.msg, cmsg);
+                                        return v.test(c.func, c.msg, c.notmsg||false, cmsg);
                                         }
                                         return a;
                             },
+        get not(){v.n=true;return a},
         async: async _ => (await v.proc(true),a),
         text:  _ => ( v.proc(), v.er.map(e=>e.error+'.').join(' ') ),
         json:  _ => ( v.proc(), JSON.stringify(v.er) ),
@@ -62,4 +70,8 @@ export function aovi(input) {
     }
 
     return a;
+}
+
+export function check(value){
+    return aovi({e:value}).check('e','Value').required();
 }

@@ -1,6 +1,6 @@
 # aovi
 
-AOVI is a tiny (~1.5KB) dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
+AOVI is a tiny (<2KB) dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
 
 ## Usage
 
@@ -101,15 +101,18 @@ You may add your own reusable validators to the `aovi` object. Custom validator 
 
 * `msg` - default validation error message. Name of the property or its label will be added at the start of this text.
 
+* `notmsg` - default validation error message if used `.not` operator before. Name of the property or its label will be added at the start of this text. If ommited, `.not` will not be allowing to use with this custom validator.
+
 ### Custom validator example
 
 ```js
 
-const my_custom_validator = (a,b) => {           // params will be passed to the validator
+const my_custom_validator = (a,b) => {                  // params will be passed to the validator
         return {
-            func: (v)=>(v>=a && v<=b),           // gets value, must return true or false    
-            name: 'between',                     // name of the validator method
-            msg: `must be between ${a} and ${b}` // error message, when func returns false
+            func: (v)=>(v>=a && v<=b),                  // gets value, must return true or false    
+            name: 'between',                            // name of the validator method
+            msg: `must be between ${a} and ${b}`        // error message, when func returns false
+            notmsg: `must not be between ${a} and ${b}` // error message, when used .not and func returns true
         }
 }
 
@@ -120,11 +123,11 @@ const result = aovi(test_object)
     .check('number1')
         .between(10,50)
     .check('number2')
-        .between(0,100)
+        .not.between(0,100)
     .check('number3')
         .between(1,10,'The value is out of range')
 
-console.log(result.text()); // number1 must be between 10 and 50. The value is out of range.
+console.log(result.text()); // number1 must be between 10 and 50. number2 must not be between 0 and 100. The value is out of range.
 ```
 
 ## API
@@ -140,6 +143,10 @@ Add custom validator to the `aovi` object. See [Custom validators](#custom-valid
 ### `check(property_name,[label])`
 
 Set which property will be validate by next functions. `label` is the name for the property which will be shown in default error messages
+
+### `.not`
+
+Invert result of the next validator. Can be used before `type`,`match`,`is`,`oneof` and `length` validators. Example `.not.length(5)`.
 
 ### `required([custom_message])`
 

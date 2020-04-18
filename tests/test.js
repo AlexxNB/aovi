@@ -7,3 +7,5 @@ test('Custom messages', require('./_custom_messages'));
 test('Chaining tests', require('./_chaining_test'));
 test('Asynchronus tests', require('./_async_test'));
 test('Custom validator', require('./_custom_validator'));
+test('Check value', require('./_check_value'));
+test('Not operator', require('./_not_operator'));
