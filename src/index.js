@@ -72,6 +72,6 @@ export function aovi(input) {
     return a;
 }
 
-export function check(value){
-    return aovi({e:value}).check('e','Value').required();
+export function check(value,name){
+    return aovi({e:value}).check('e',name||'Value').required();
 }

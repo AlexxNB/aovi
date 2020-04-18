@@ -136,11 +136,11 @@ console.log(result.text()); // number1 must be between 10 and 50. number2 must n
 
 Detrmine object for validation
 
-### `use(validator_function)`
+### `.use(validator_function)`
 
 Add custom validator to the `aovi` object. See [Custom validators](#custom-validators) for more info.
 
-### `check(property_name,[label])`
+### `.check(property_name,[label])`
 
 Set which property will be validate by next functions. `label` is the name for the property which will be shown in default error messages
 
@@ -148,62 +148,62 @@ Set which property will be validate by next functions. `label` is the name for t
 
 Invert result of the next validator. Can be used before `type`,`match`,`is`,`oneof` and `length` validators. Example `.not.length(5)`.
 
-### `required([custom_message])`
+### `.required([custom_message])`
 
 Check if the propertyis defined in object and its value is not equal empty string. 
 
-### `type(type,[custom_message])`
+### `.type(type,[custom_message])`
 
 Check if the property's value is of specified `type`, like 'string','number' etc. 
 
-### `match(regular_expression,[custom_message])`
+### `.match(regular_expression,[custom_message])`
 
 Check if the property's value is match `regular_expression`.
 
-### `is(function,[custom_message])`
+### `.is(function,[custom_message])`
 
 Pass if the `function` returns `true`. This function accept one parameter which is a value of the current property. If `function` is asynchronus, you must call [`.async()`](#async) at the end of the chain.
 
-### `oneof(array_of_variants,[custom_message])`
+### `.oneof(array_of_variants,[custom_message])`
 
 Check if the property's value is in the `array_of_variants` array.
 
-### `length(needed_length,[custom_message])`
+### `.length(needed_length,[custom_message])`
 
 Check if the property's value length is exact `needed_length`.
 
-### `minLength(min_length,[custom_message])`
+### `.minLength(min_length,[custom_message])`
 
 Check if the property's value length is greater than or equal `min_length`.
 
-### `maxLength(max_length,[custom_message])`
+### `.maxLength(max_length,[custom_message])`
 
 Check if the property's value length is less than or equal `max_length`.
 
-### `min(minimum,[custom_message])`
+### `.min(minimum,[custom_message])`
 
 Check if the property's valueis greater than or equal `minimum`.
 
-### `max(maximum,[custom_message])`
+### `.max(maximum,[custom_message])`
 
 Check if the property's value is less than or equal `maximum`.
 
-### `async()`
+### `.async()`
 
 You must end validation chain with `.async()` when you use asynchronus functions in the `.is()` validator. See the [asynhronus example](#asynchronus-example) for more info.
 
-### `valid`
+### `.valid`
 
 Is `true` when no errors where occured during validation chain. Will be `false` in other case.
 
-### `text()`
+### `.text()`
 
 Return errors as string. Will return `''` if no errors.
 
-### `json()`
+### `.json()`
 
 Return errors as JSON-string. Will return `'[]'` if no errors.
 
-### `array()`
+### `.array()`
 
 Return errors as array. Will return `[]` if no errors.
