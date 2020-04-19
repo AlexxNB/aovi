@@ -4,7 +4,6 @@
   "description": "AOVI is a tiny dependency free library to validate values in declarative way.",
   "main": "dist/aovi.js",
   "module": "dist/aovi.mjs",
-  "browser": "dist/aovi.browser.js",
   "scripts": {
     "build": "rollup -c",
     "pretest": "rollup -c --environment NODE_ENV:test",
