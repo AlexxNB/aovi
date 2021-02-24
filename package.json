@@ -4,9 +4,11 @@
   "description": "AOVI is a tiny dependency free library to validate values in declarative way.",
   "main": "dist/aovi.js",
   "module": "dist/aovi.mjs",
+  "cdn": "dist/aovi.min.js",
+  "unpkg": "dist/aovi.min.js",
   "scripts": {
-    "build": "rollup -c",
-    "pretest": "rollup -c --environment NODE_ENV:test",
+    "build": "node esbuild",
+    "pretest": "node esbuild --dev",
     "test": "node tests/test | tap-diff"
   },
   "repository": {
@@ -26,12 +28,9 @@
     "url": "https://github.com/AlexxNB/aovi/issues"
   },
   "homepage": "https://github.com/AlexxNB/aovi#readme",
-  "dependencies": {},
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^7.1.1",
     "diff": "^4.0.2",
-    "rollup": "^2.0.0",
-    "rollup-plugin-terser": "^7.0.0",
+    "esbuild": "^0.8.51",
     "tap-diff": "^0.1.1",
     "tape": "^4.13.2"
   }
