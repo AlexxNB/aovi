@@ -1,6 +1,8 @@
-const {aovi} = require('../dist/aovi');
+const { test } = require('uvu');
+const {equal} = require('uvu/assert');
+const {aovi} = require('../dist/aovi.js');
 
-module.exports = async function (t) {
+test('Custom validator', () => {
     let result,test_object={};
 
     const validator = (a,b) => {
@@ -22,7 +24,7 @@ module.exports = async function (t) {
         .check('number2')
             .between(10,50,'Value is out of range')
         
-    t.equal(result.text(),'number must be between 1 and 10. Value is out of range.',"Test custom validator");
+    equal(result.text(),'number must be between 1 and 10. Value is out of range.',"Test custom validator");
+});
 
-    t.end();
-}
+test.run();

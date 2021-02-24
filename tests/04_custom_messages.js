@@ -1,6 +1,8 @@
-const {aovi} = require('../dist/aovi');
+const { test } = require('uvu');
+const {equal} = require('uvu/assert');
+const {aovi} = require('../dist/aovi.js');
 
-module.exports = function (t) {
+test('Custom messages', () => {
     let result,msg;
 
     msg = 'You must provide the lastname';
@@ -8,28 +10,28 @@ module.exports = function (t) {
         .check('lastname')
             .required(msg)
             
-    t.equal(result.text(),`${msg}.`,"Required custom message");
+    equal(result.text(),`${msg}.`,"Required custom message");
 
     msg = 'Wrong type for name';
     result = aovi({name:'john'})
         .check('name')
             .type('number',msg)
             
-    t.equal(result.text(),`${msg}.`,"Type custom message");
+    equal(result.text(),`${msg}.`,"Type custom message");
 
     msg = 'Wrong name';
     result = aovi({name:'john'})
         .check('name')
             .match(/^[0-9]+$/,msg)
             
-    t.equal(result.text(),`${msg}.`,"Match custom message");
+    equal(result.text(),`${msg}.`,"Match custom message");
 
     msg = 'Wrong name';
     result = aovi({name:'john'})
         .check('name')
             .match(/^[0-9]+$/,msg)
             
-    t.equal(result.text(),`${msg}.`,"Match custom message");
+    equal(result.text(),`${msg}.`,"Match custom message");
 
     msg = 'Wrong length';
     result = aovi({name:'john'})
@@ -40,7 +42,7 @@ module.exports = function (t) {
         .check('name')
             .maxLength(3,msg)
             
-    t.equal(result.text(),`${msg}. ${msg}. ${msg}.`,"Length,minLength,maxLength custom messages");
+    equal(result.text(),`${msg}. ${msg}. ${msg}.`,"Length,minLength,maxLength custom messages");
 
     msg = 'Wrong value';
     result = aovi({number:42})
@@ -49,21 +51,22 @@ module.exports = function (t) {
         .check('number')
             .max(5,msg)
             
-    t.equal(result.text(),`${msg}. ${msg}.`,"Min,Max custom messages");
+    equal(result.text(),`${msg}. ${msg}.`,"Min,Max custom messages");
 
     msg = 'Name is bad';
     result = aovi({name:'john'})
         .check('name')
             .is(false,msg)
          
-    t.equal(result.text(),`${msg}.`,"Is custom message");
+    equal(result.text(),`${msg}.`,"Is custom message");
 
     msg = 'Name should be one of the list';
     result = aovi({name:'john'})
         .check('name')
             .oneof(['one','two','three'],msg)
             
-    t.equal(result.text(),`${msg}.`,"Oneof custom message");
+    equal(result.text(),`${msg}.`,"Oneof custom message");
         
-    t.end();
-}
+});
+
+test.run();

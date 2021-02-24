@@ -1,6 +1,8 @@
-const {aovi} = require('../dist/aovi');
+const { test } = require('uvu');
+const {equal} = require('uvu/assert');
+const {aovi} = require('../dist/aovi.js');
 
-module.exports = async function (t) {
+test('Asynchronus test', async () => {
     let result,test_object={};
 
     let dbrequest = (name)=>new Promise((resolve, reject) => setTimeout( _ => {resolve(name==="john");}, 300));
@@ -14,7 +16,7 @@ module.exports = async function (t) {
             .is( async v => dbrequest(v) )
         .async()
         
-    t.equal(result.text(),'name must have a length of 3. name2 is not valid.',"Is asynchronus condition");
+    equal(result.text(),'name must have a length of 3. name2 is not valid.',"Is asynchronus condition");
+});
 
-    t.end();
-}
+test.run();

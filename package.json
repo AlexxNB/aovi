@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node esbuild",
     "pretest": "node esbuild --dev",
-    "test": "node tests/test | tap-diff"
+    "test": "uvu tests"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,7 @@
   },
   "homepage": "https://github.com/AlexxNB/aovi#readme",
   "devDependencies": {
-    "diff": "^4.0.2",
     "esbuild": "^0.8.51",
-    "tap-diff": "^0.1.1",
-    "tape": "^4.13.2"
+    "uvu": "^0.5.1"
   }
 }
