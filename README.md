@@ -1,6 +1,6 @@
 # aovi
 
-AOVI is a tiny (<2KB) dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
+AOVI is a tiny (~2.5KB) dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
 
 ## Usage
 
@@ -109,19 +109,19 @@ You may add your own reusable validators to the `aovi` object. Custom validator 
 ```js
 // a,b - params, which should be be passed to the validator by user
 const my_custom_validator = (a,b) => {                      
-        return {    
-            // name of the validator method
-            name: 'between',             
-            
-            // test function gets value, must return true or false
-            test: (v)=>(v>=a && v<=b),      
-            
-            // error message, when test returns false
-            message: `must be between ${a} and ${b}`      
-            
-            // error message, when used .not and test returns true
-            notMessage: `must not be between ${a} and ${b}` 
-        }
+    return {    
+        // name of the validator method
+        name: 'between',             
+        
+        // test function gets value, must return true or false
+        test: (v)=>(v>=a && v<=b),      
+        
+        // error message, when test returns false
+        message: `must be between ${a} and ${b}`      
+        
+        // error message, when used .not and test returns true
+        notMessage: `must not be between ${a} and ${b}` 
+    }
 }
 
 const test_object={number1:5, number2:42, number3:100};
