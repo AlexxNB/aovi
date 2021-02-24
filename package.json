@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node esbuild",
     "pretest": "node esbuild --dev",
-    "test": "uvu tests"
+    "test": "export NODE_OPTIONS='--enable-source-maps' && uvu tests"
   },
   "repository": {
     "type": "git",

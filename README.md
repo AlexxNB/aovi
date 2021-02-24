@@ -78,16 +78,17 @@ async function(req,res){
 
     const data = req.body;
 
-    const result = await aovi(data)      // don't miss await keyword here
+    const result = aovi(data)     
         .check('password')
             .required()    
             .is(async password => await check_password(data.userid,password)),'Wrong password')
         .check('userid')
             .required()
             .type('number')
-        .async()                         // you must end with .async() function
 
-    console.log(result.valid); // true or false
+    console.log(await result.valid);  // don't miss await keyword here
+    console.log(await result.text());
+    console.log(await result.json());
 }
 
 ```
@@ -95,24 +96,31 @@ async function(req,res){
 ## Custom validators
 You may add your own reusable validators to the `aovi` object. Custom validator is the function which must return object with three elements:
 
-* `func` - test function must return `true` or `false`. When `true` value of the property is valid. Function gets the value of the property as its parameter.
-
 * `name` - name for validator method 
 
-* `msg` - default validation error message. Name of the property or its label will be added at the start of this text.
+* `test` - test function must return `true` or `false`. When `true` value of the property is valid. Function gets the value of the property as its parameter.
 
-* `notmsg` - default validation error message if used `.not` operator before. Name of the property or its label will be added at the start of this text. If ommited, `.not` will not be allowing to use with this custom validator.
+* `message` - default validation error message. Name of the property or its label will be added at the start of this text.
+
+* `notMessage` - default validation error message if used `.not` operator before. Name of the property or its label will be added at the start of this text. If ommited, `.not` will not be allowing to use with this custom validator.
 
 ### Custom validator example
 
 ```js
-
-const my_custom_validator = (a,b) => {                  // params will be passed to the validator
-        return {
-            func: (v)=>(v>=a && v<=b),                  // gets value, must return true or false    
-            name: 'between',                            // name of the validator method
-            msg: `must be between ${a} and ${b}`        // error message, when func returns false
-            notmsg: `must not be between ${a} and ${b}` // error message, when used .not and func returns true
+// a,b - params, which should be be passed to the validator by user
+const my_custom_validator = (a,b) => {                      
+        return {    
+            // name of the validator method
+            name: 'between',             
+            
+            // test function gets value, must return true or false
+            test: (v)=>(v>=a && v<=b),      
+            
+            // error message, when test returns false
+            message: `must be between ${a} and ${b}`      
+            
+            // error message, when used .not and test returns true
+            notMessage: `must not be between ${a} and ${b}` 
         }
 }
 
@@ -162,7 +170,7 @@ Check if the property's value is match `regular_expression`.
 
 ### `.is(function,[custom_message])`
 
-Pass if the `function` returns `true`. This function accept one parameter which is a value of the current property. If `function` is asynchronus, you must call [`.async()`](#async) at the end of the chain.
+Pass if the `function` returns `true`. This function accept one parameter which is a value of the current property. If `function` is asynchronous, you must call result functions (`.text()`, `.json()`, `.array()` and `.valid`) asynchronously too.
 
 ### `.oneof(array_of_variants,[custom_message])`
 
@@ -187,10 +195,6 @@ Check if the property's valueis greater than or equal `minimum`.
 ### `.max(maximum,[custom_message])`
 
 Check if the property's value is less than or equal `maximum`.
-
-### `.async()`
-
-You must end validation chain with `.async()` when you use asynchronus functions in the `.is()` validator. See the [asynhronus example](#asynchronus-example) for more info.
 
 ### `.valid`
 

@@ -7,9 +7,10 @@ test('Custom validator', () => {
 
     const validator = (a,b) => {
         return {
-            func: (v)=>(v>=a && v<=b),
             name: 'between',
-            msg: `must be between ${a} and ${b}`
+            test: (v)=>(v>=a && v<=b),
+            message: `must be between ${a} and ${b}`,
+            notMessage: `must not be between ${a} and ${b}`
         }
     }
 
@@ -21,10 +22,12 @@ test('Custom validator', () => {
             .between(10,100)
         .check('number')
             .between(1,10)
+        .check('number')
+            .not.between(10,50)
         .check('number2')
             .between(10,50,'Value is out of range')
         
-    equal(result.text(),'number must be between 1 and 10. Value is out of range.',"Test custom validator");
+    equal(result.text(),'number must be between 1 and 10. number must not be between 10 and 50. Value is out of range.',"Test custom validator");
 });
 
 test.run();
