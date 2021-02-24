@@ -70,10 +70,16 @@ export function aovi(input) {
         }
     }
 
+    const preserved = ['check','use','not','valid','text','json','array'];
+
     const methods = {
         check: validator.add,
         use: (customValidator,name) => {  
-            methods[name || customValidator().name] = function (){
+            name = name || customValidator().name;
+
+            if(preserved.includes(name)) throw new Error('Invalid validator name:'+name);
+            
+            methods[name] = function (){
                 const params=Array.from(arguments);
                 const customMessage = params.length > customValidator.length ? params.pop() : undefined;
                 const custom = customValidator.apply(null,params);
