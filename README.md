@@ -117,10 +117,10 @@ const my_custom_validator = (a,b) => {
         test: (v)=>(v>=a && v<=b),      
         
         // error message, when test returns false
-        message: `must be between ${a} and ${b}`      
+        message: `%Label% must be between ${a} and ${b}`      
         
         // error message, when used .not and test returns true
-        notMessage: `must not be between ${a} and ${b}` 
+        notMessage: `%Label% must not be between ${a} and ${b}` 
     }
 }
 
@@ -137,6 +137,15 @@ const result = aovi(test_object)
 
 console.log(result.text()); // number1 must be between 10 and 50. number2 must not be between 0 and 100. The value is out of range.
 ```
+
+## Meassages variables
+There is a set ov placeholders, which you may use in validators custom messages  or in the messages of custom validators. They will be replaced by their values in result.
+
+* `%label%` - label (or name, if label not specified) of the tested property.
+* `%Label%` - same, but with capitalized first letter.
+* `%name%` - name of the tested property.
+* `%Name%` - same, but with capitalized first letter.
+* `%value%` - provided property value.
 
 ## API
 

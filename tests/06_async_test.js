@@ -16,8 +16,8 @@ test('Asynchronus test', async () => {
         .check('name2')
             .is( async v => dbrequest(v) )
         
-    equal(await result.text(),'name must have a length of 3. name2 is not valid.',"Asynchronus text");
-    equal(await result.json(),'[{"name":"name","error":"name must have a length of 3"},{"name":"name2","error":"name2 is not valid"}]',"Asynchronus json");
+    equal(await result.text(),'Name must have a length of 3. Name2 is not valid.',"Asynchronus text");
+    equal(await result.json(),'[{"name":"name","error":"Name must have a length of 3"},{"name":"name2","error":"Name2 is not valid"}]',"Asynchronus json");
 });
 
 test.run();

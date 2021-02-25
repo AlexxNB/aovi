@@ -29,7 +29,7 @@ export function aovi(input) {
 
             validator.current.checks.push({
                 fn: validator.isnot ? (v,e) => !conditionFn(v,e) : conditionFn,
-                message: customMessage||`${validator.current.label} ${validator.isnot ? notMessage : message}`,
+                message: customMessage||`${validator.isnot ? notMessage : message}`,
                 required: required||false
             });
 
@@ -52,7 +52,7 @@ export function aovi(input) {
 
                 const addError = (valid)=>!valid && validator.errors.push({
                     name: prop.name, 
-                    error: check.message
+                    error: injectVars(check.message,prop)
                 });
 
                 const checkResult = check.fn(prop.value,prop.exists);
@@ -107,4 +107,17 @@ function wait(fn,callback){
     if(result && result.then){
         return new Promise( resolve => result.then( res => resolve( callback(res) ) ) );
     }else return callback(result);
+}
+
+function injectVars(str,prop){
+    return str
+        .replace(new RegExp(`%label%`,'g'),prop.label)
+        .replace(new RegExp(`%Label%`,'g'),capitilizeFL(prop.label))
+        .replace(new RegExp(`%name%`,'g'),prop.name)
+        .replace(new RegExp(`%Name%`,'g'),capitilizeFL(prop.name))
+        .replace(new RegExp(`%value%`,'g'),String(prop.value));
+}
+
+function capitilizeFL(str){
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

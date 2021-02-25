@@ -17,21 +17,21 @@ test('Simple tests', () => {
             .required()    
         .check('lastname')
             .required()    
-    equal(result.text(),'unexistent is required. lastname is required.',"Required test");
+    equal(result.text(),'Unexistent is required. Lastname is required.',"Required test");
 
     result = aovi({name:123})
         .check('name')
             .type('string')
         .check('name')
             .type('number')
-    equal(result.text(),'name must be of type string.',"Type test");
+    equal(result.text(),'Name must be of type string.',"Type test");
 
     result = aovi({name:'john'})
         .check('name')
             .match(/^[a-z]+$/)
         .check('name')
             .match(/^[0-9]+$/)
-    equal(result.text(),'name must match /^[0-9]+$/.',"Match test");
+    equal(result.text(),'Name must match /^[0-9]+$/.',"Match test");
 
     result = aovi({name:'john',list:[1,2,3,4,5]})
         .check('name')
@@ -42,7 +42,7 @@ test('Simple tests', () => {
             .length(5)
         .check('list')
             .length(10)
-    equal(result.text(),'name must have a length of 10. list must have a length of 10.',"Length test");
+    equal(result.text(),'Name must have a length of 10. List must have a length of 10.',"Length test");
 
     result = aovi({name:'john',list:[1,2,3,4,5]})
         .check('name')
@@ -53,7 +53,7 @@ test('Simple tests', () => {
             .minLength(3)
         .check('list')
             .minLength(10)
-    equal(result.text(),'name must have a minimum length of 10. list must have a minimum length of 10.',"minLength test");
+    equal(result.text(),'Name must have a minimum length of 10. List must have a minimum length of 10.',"minLength test");
 
     result = aovi({name:'john',list:[1,2,3,4,5]})
         .check('name')
@@ -64,21 +64,21 @@ test('Simple tests', () => {
             .maxLength(3)
         .check('list')
             .maxLength(10)
-    equal(result.text(),'name must have a maximum length of 3. list must have a maximum length of 3.',"maxLength test");
+    equal(result.text(),'Name must have a maximum length of 3. List must have a maximum length of 3.',"maxLength test");
 
     result = aovi({number:42})
         .check('number')
             .min(3)
         .check('number')
             .min(50)
-    equal(result.text(),'number must be greater than 50.',"Min test");
+    equal(result.text(),'Number must be greater than 50.',"Min test");
 
     result = aovi({number:42})
         .check('number')
             .max(3)
         .check('number')
             .max(50)
-    equal(result.text(),'number must be less than 3.',"Max test");
+    equal(result.text(),'Number must be less than 3.',"Max test");
 
     const test_obj = {name:'john'};
     result = aovi(test_obj)
@@ -86,14 +86,14 @@ test('Simple tests', () => {
             .is(test_obj.name === 'john')
         .check('name')
             .is(()=>test_obj.name === 'bill')
-    equal(result.text(),'name is not valid.',"Is test");
+    equal(result.text(),'Name is not valid.',"Is test");
 
     result = aovi({name:'john'})
         .check('name')
             .oneof(['bill','john','alex'])
         .check('name')
             .oneof(['bill','boris','alex'])
-    equal(result.text(),'name must be either bill, boris or alex.',"Oneof test");
+    equal(result.text(),'Name must be either bill, boris or alex.',"Oneof test");
 });
 
 test.run();

@@ -9,8 +9,8 @@ test('Custom validator', () => {
         return {
             name: 'between',
             test: (v)=>(v>=a && v<=b),
-            message: `must be between ${a} and ${b}`,
-            notMessage: `must not be between ${a} and ${b}`
+            message: `%Label% must be between ${a} and ${b}`,
+            notMessage: `%Label% must not be between ${a} and ${b}`
         }
     }
 
@@ -27,7 +27,7 @@ test('Custom validator', () => {
         .check('number2')
             .between(10,50,'Value is out of range')
         
-    equal(result.text(),'number must be between 1 and 10. number must not be between 10 and 50. Value is out of range.',"Test custom validator");
+    equal(result.text(),'Number must be between 1 and 10. Number must not be between 10 and 50. Value is out of range.',"Test custom validator");
 });
 
 test.run();

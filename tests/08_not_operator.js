@@ -9,7 +9,7 @@ test('Not operator', () => {
         .check('name')
             .not.length(4)
 
-    equal(result.text(),'name must not have a length of 4.',"Test not operator");
+    equal(result.text(),'Name must not have a length of 4.',"Test not operator");
 });
 
 test.run();

@@ -12,7 +12,7 @@ test('Chaining test', () => {
         .check('lastname')
             .length(10)
             
-    equal(result.text(),'name must have a length of 10.',"Skip checks if not required");
+    equal(result.text(),'Name must have a length of 10.',"Skip checks if not required");
 });
 
 test.run();

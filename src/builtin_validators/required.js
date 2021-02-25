@@ -1,7 +1,7 @@
 export default () => {                 
     return {
         test: (_,exists)=>exists,                       
-        message: `is required`,
+        message: `%Label% is required`,
         required: true        
     }
 }
