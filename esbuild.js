@@ -35,6 +35,7 @@ if(!DEV){
         outfile: pkg.cdn,
         minify: !DEV,
         bundle: true,
+        globalName: 'Aovi',
     }).catch((e) => {
         process.exit(1);
     })

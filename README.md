@@ -4,6 +4,7 @@ AOVI is a tiny (~2.5KB) dependency free library to validate values of the simple
 
 ## Usage
 
+
 ### Node
 ```js
 const {aovi} = require('aovi');
@@ -20,12 +21,17 @@ console.log(result.valid); // true
 
 ### Browser
 ```html
-<script src='https://unpkg.com/aovi/dist/aovi.browser.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/aovi'></script>
 ...
 <Input id="password" type="password" value="12345"/>
 
 <script>
-    const test_object = {password:document.getElementById('password').value};
+    const {aovi} = Aovi;  
+
+    const test_object = {
+        password: document.getElementById('password').value
+    };
+
     const result = aovi(test_object)
         .check('password')
             .required()
@@ -67,12 +73,17 @@ console.log(result.valid); // false
 console.log(result.text()); // E-Mail is invalid. age must be greater than 18.
 console.log(result.json()); // [{"name": "email", "err":"E-Mail is invalid"},{"name": "age", "err":"age must be greater than 18"}]
 ```
+
+
 ### Asynchronus example
+
 ```js
 // http-request with body_parser.json middleware example
 async function(req,res){
+
+    // asynchronously request db and check password
     const check_password = async function(userid,password) {
-        const user = await db.getuser(userid); // asynchronly request user from db 
+        const user = await db.getuser(userid); 
         return user.password===password;
     }
 
@@ -81,12 +92,15 @@ async function(req,res){
     const result = aovi(data)     
         .check('password')
             .required()    
-            .is(async password => await check_password(data.userid,password)),'Wrong password')
+            .is(async (password) => {
+                return await check_password( data.userid, password )
+            },'Wrong password')
         .check('userid')
             .required()
             .type('number')
 
-    console.log(await result.valid);  // don't miss await keyword here
+    // don't miss await keyword here
+    console.log(await result.valid);  
     console.log(await result.text());
     console.log(await result.json());
 }
@@ -94,7 +108,8 @@ async function(req,res){
 ```
 
 ## Custom validators
-You may add your own reusable validators to the `aovi` object. Custom validator is the function which must return object with three elements:
+
+You may add your own reusable validators to the `aovi` object. Custom validator is the function which must return object containing properties below:
 
 * `name` - name for validator method 
 
@@ -102,7 +117,8 @@ You may add your own reusable validators to the `aovi` object. Custom validator 
 
 * `message` - default validation error message. Name of the property or its label will be added at the start of this text.
 
-* `notMessage` - default validation error message if used `.not` operator before. Name of the property or its label will be added at the start of this text. If ommited, `.not` will not be allowing to use with this custom validator.
+* `notMessage` - default validation error message if used `.not` operator before. Name of the property or its label will be added at the start of this text. If ommited, `.not` operator will not be allowing to use with this custom validator.
+
 
 ### Custom validator example
 
