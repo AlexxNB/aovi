@@ -57,7 +57,7 @@ export function aovi(input) {
 
                 const checkResult = check.fn(prop.value,prop.exists);
 
-                if(checkResult.then) {
+                if(checkResult && checkResult.then) {
                     promises.push(checkResult);
                     checkResult.then(result => {
                         addError(result);
