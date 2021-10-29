@@ -1,15 +1,15 @@
-export type AoviTestObject = Record<string, any>
-export type ValidatorCreator = (...params:any) => Validator
-export type TestFunction = (value:any) => Boolean | Promise<Boolean>
+export declare type AoviTestObject = Record<string, any>
+export declare type ValidatorCreator = (...params:[any]) => Validator
+export declare type TestFunction = (value:any) => Boolean | Promise<Boolean>
 
-export interface ValidationError {
+export declare type ValidationError = {
     /** Property name or label */
     name:string,
     /** Validation error message */
     error: string
 }
 
-export interface Validator {
+export declare interface Validator {
     /** Name of the validator method */
     name: string,
     /** Function which gets value for testing, 
@@ -22,7 +22,7 @@ export interface Validator {
     notMessage?: string
 }
 
-export interface Aovi {
+export declare type Aovi = {
     /** Add custom validator to the aovi object.  
      * @param custom_validator Your custom validator function. 
      * @see https://www.npmjs.com/package/aovi#custom-validators
@@ -120,6 +120,8 @@ export interface Aovi {
      * Will return [] if no errors.
      * */
     array: () => [ValidationError] | Promise<[ValidationError]>
+} & {
+    [key: string]: (...params:[any]) => boolean
 }
 
 /** Run validation of the test object
