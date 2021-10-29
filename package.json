@@ -6,6 +6,7 @@
   "module": "dist/aovi.mjs",
   "cdn": "dist/aovi.min.js",
   "unpkg": "dist/aovi.min.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "node esbuild",
     "pretest": "node esbuild --dev",
