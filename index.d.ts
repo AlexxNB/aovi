@@ -109,17 +109,17 @@ export interface Aovi {
     /** Return errors as string. 
      * Will return '' if no errors. 
      * */
-    text: string | Promise<string>
+    text: () => string | Promise<string>
 
     /** Return errors as a JSON-string. 
      * Will return '[]' if no errors.
      * */
-    json: string | Promise<string>
+    json: () => string | Promise<string>
 
     /** Return errors as array. 
      * Will return [] if no errors.
      * */
-    array: [ValidationError] | Promise<[ValidationError]>
+    array: () => [ValidationError] | Promise<[ValidationError]>
 }
 
 /** Run validation of the test object

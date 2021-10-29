@@ -1,6 +1,6 @@
 # aovi
 
-AOVI is a tiny (~2.5KB) dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
+AOVI is a lightweight dependency free library to validate values of the simple object's properties in declarative way. May be used in Node or in browser as well.
 
 ## Usage
 
@@ -71,7 +71,7 @@ const result = aovi(test_object)
 
 console.log(result.valid); // false
 console.log(result.text()); // E-Mail is invalid. age must be greater than 18.
-console.log(result.json()); // [{"name": "email", "err":"E-Mail is invalid"},{"name": "age", "err":"age must be greater than 18"}]
+console.log(result.json()); // [{"name": "email", "error":"E-Mail is invalid"},{"name": "age", "error":"age must be greater than 18"}]
 ```
 
 
