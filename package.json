@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/AlexxNB/aovi#readme",
   "devDependencies": {
-    "esbuild": "^0.13.10",
+    "esbuild": "^0.25.0",
     "uvu": "^0.5.2"
   }
 }
